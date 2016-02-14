@@ -71,8 +71,9 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 
     @Override
 	public Type visitFunctionDecl(GooParser.FunctionDeclContext ctx) {
+		int lineNumber = ctx.start.getLine();
 		String funcName = ctx.functionName().getText();
-		FunctionSymbol function = new FunctionSymbol(funcName, currentScope);
+		FunctionSymbol function = new FunctionSymbol(funcName, currentScope, lineNumber);
 		currentScope.define(function);	// add function defn to current scope
 		currentScope = function;		// enter this new scope
 		saveScope(ctx, currentScope);	// remember scope for this parse tree node
@@ -141,12 +142,13 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 
     @Override
 	public Type visitFieldDecl(GooParser.FieldDeclContext ctx) {
+		int lineNumber = ctx.start.getLine();
 		List<Token> ids = ctx.identifierList().idl;
 		Type typ = visit(ctx.type());
 		if (ids != null) {
 		    for( Token t : ids ) {
 		        String id = t.getText();
-		        Symbol sy = new Symbol(id, Symbol.Kind.Field, typ, currentScope);
+		        Symbol sy = new Symbol(id, Symbol.Kind.Field, typ, currentScope, lineNumber);
 		        currentScope.define(sy);
 		    }
 		}
@@ -161,9 +163,10 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 
     @Override
 	public Type visitTypeSpec(GooParser.TypeSpecContext ctx) {
+		int lineNumber = ctx.start.getLine();
 		String name = ctx.Identifier().getText();
 		Type t = visit(ctx.type());
-		Symbol sy = new Symbol(name, Symbol.Kind.TypeName, t, currentScope);
+		Symbol sy = new Symbol(name, Symbol.Kind.TypeName, t, currentScope, lineNumber);
 		currentScope.define(sy);
 		return t;
 	}
@@ -176,12 +179,13 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 
 	@Override
 	public Type visitVarSpec(GooParser.VarSpecContext ctx) {
+		int lineNumber = ctx.start.getLine();
 		List<Token> ids = ctx.identifierList().idl;
 		Type typ = visit(ctx.varSpecRem());
 		if (ids != null) {
 			for(Token t : ids) {
 				String id = t.getText();
-				Symbol sy = new Symbol(id, Symbol.Kind.Variable, typ, currentScope);
+				Symbol sy = new Symbol(id, Symbol.Kind.Variable, typ, currentScope, lineNumber);
 				currentScope.define(sy);
 			}
 		}
@@ -198,12 +202,13 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 
 	@Override
 	public Type visitConstSpec(GooParser.ConstSpecContext ctx) {
+		int lineNumber = ctx.start.getLine();
 		List<Token> ids = ctx.identifierList().idl;
 		Type typ = visit(ctx.constSpecRem());
 		if(ids != null) {
 			for (Token t: ids) {
 				String id = t.getText();
-				Symbol sy = new Symbol(id, Symbol.Kind.Constant, typ, currentScope);
+				Symbol sy = new Symbol(id, Symbol.Kind.Constant, typ, currentScope, lineNumber);
 				currentScope.define(sy);
 			}
 		}

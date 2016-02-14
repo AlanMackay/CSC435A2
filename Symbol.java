@@ -10,19 +10,28 @@ public class Symbol { // A generic programming language symbol
     Kind kind;
     Type type;
     Scope scope;      // the scope containing the definition
+    int lineNumber;
 
     public Symbol(String name) {
         this.name = name;
         kind = Kind.Unknown;
         type = Type.unknownType;
         scope = null;
+        lineNumber = 0;
     }
-
     public Symbol(String name, Kind kind, Type type, Scope scope) {
         this.name = name;
         this.kind = kind;
         this.type = type;
         this.scope = scope;
+    }
+
+    public Symbol(String name, Kind kind, Type type, Scope scope, int lineNumber) {
+        this.name = name;
+        this.kind = kind;
+        this.type = type;
+        this.scope = scope;
+        this.lineNumber = lineNumber;
     }
 
 	public Symbol() { }
@@ -41,7 +50,7 @@ public class Symbol { // A generic programming language symbol
     
     public int getLineNumber() {
     	// unimplemented
-    	return 0;
+    	return lineNumber;
     }
 
     public String toString() {
