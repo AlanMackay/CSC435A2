@@ -168,4 +168,50 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 		return t;
 	}
 
+	@Override
+	public Type visitSliceType(GooParser.SliceTypeContext ctx) {
+		Type t = visit(ctx.elementType());
+		return Type.newSliceType(t);
+	}
+
+	@Override
+	public Type visitVarSpec(GooParser.VarSpecContext ctx) {
+		List<Token> ids = ctx.identifierList().idl;
+		Type typ = visit(ctx.varSpecRem());
+		if (ids != null) {
+			for(Token t : ids) {
+				String id = t.getText();
+				Symbol sy = new Symbol(id, Symbol.Kind.Variable, typ, currentScope);
+				currentScope.define(sy);
+			}
+		}
+		return typ;
+	}
+
+	@Override 
+	public Type visitVarSpecRem(GooParser.VarSpecRemContext ctx) {
+		Type t = visit(ctx.type());
+		return t;
+	}
+
+	@Override
+	public Type visitConstSpec(GooParser.ConstSpecContext ctx) {
+		List<Token> ids = ctx.identifierList().idl;
+		Type typ = visit(ctx.constSpecRem());
+		if(ids != null) {
+			for (Token t: ids) {
+				String id = t.getText();
+				Symbol sy = new Symbol(id, Symbol.Kind.Constant, typ, currentScope);
+				currentScope.define(sy);
+			}
+		}
+		return typ;
+	}
+
+	@Override
+	public Type visitConstSpecRem(GooParser.ConstSpecRemContext ctx) {
+		Type t = visit(ctx.type());
+		return t;
+	}
+
 }
