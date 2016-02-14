@@ -223,4 +223,10 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 		return t;
 	}
 
+	@Override
+	public Type visitPointerType(GooParser.PointerTypeContext ctx) {
+		Type t = visit(ctx.baseType());
+		return Type.newPointerType(t);
+	}
+
 }

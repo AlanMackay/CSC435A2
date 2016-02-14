@@ -24,6 +24,7 @@ public class Symbol { // A generic programming language symbol
         this.kind = kind;
         this.type = type;
         this.scope = scope;
+        this.lineNumber = 0;
     }
 
     public Symbol(String name, Kind kind, Type type, Scope scope, int lineNumber) {
