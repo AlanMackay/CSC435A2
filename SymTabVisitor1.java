@@ -190,7 +190,9 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 
 	@Override 
 	public Type visitVarSpecRem(GooParser.VarSpecRemContext ctx) {
-		Type t = visit(ctx.type());
+		Type t;
+		if(ctx.type() == null) t = Type.unknownType;
+		else t = visit(ctx.type());
 		return t;
 	}
 
@@ -210,7 +212,9 @@ public class SymTabVisitor1 extends GooBaseVisitor<Type> {
 
 	@Override
 	public Type visitConstSpecRem(GooParser.ConstSpecRemContext ctx) {
-		Type t = visit(ctx.type());
+		Type t;
+		if(ctx.type() == null) t = Type.unknownType;
+		else t = visit(ctx.type());
 		return t;
 	}
 
