@@ -24,8 +24,13 @@ public class BlockScope implements Scope {
 		// if not here, check any enclosing scope
 		return enclosingScope == null? null : enclosingScope.resolve(name);
 	}
-
+	//modifications made to method for duplicate name checking
 	public void define(Symbol sym) {
+		if(symbols.containsKey(sym.name)){//Check if symbol name is in use
+			//print error message if name is being reused within the same scope
+			String msg = ("line " + sym.lineNumber + " error: " + sym.name + " redeclared in this block");
+			ReportError.error(msg);
+		}
 		symbols.put(sym.name, sym);
 		sym.scope = this; // track the scope in each symbol
 		if (tracing) System.out.println("SY: Defined symbol: "+sym.name);
